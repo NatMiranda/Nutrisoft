@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Términos y Condiciones - Nutrisoft</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen font-sans flex flex-col">
+
+    <nav class="bg-gradient-to-r from-green-600 via-yellow-400 to-green-500 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <a href="/" class="text-2xl font-extrabold text-white tracking-wider drop-shadow-md hover:opacity-90 transition-opacity">Nutrisoft</a>
+                <div class="flex items-center gap-4">
+                    {% if usuario %}
+                        <a href="/panel" class="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg text-sm font-bold transition-all">Volver al Panel</a>
+                    {% else %}
+                        <a href="/" class="bg-white text-green-600 px-4 py-2 rounded-lg text-sm font-bold shadow-md transition-all">Iniciar Sesión</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-white py-12 border-b border-gray-200">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h1 class="text-3xl md:text-4xl font-black text-gray-900 mb-4">Términos y Condiciones</h1>
+            <p class="text-md text-gray-500 font-medium">Última actualización: Abril de 2026</p>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-3xl mx-auto px-4 sm:px-6 py-12">
+        <div class="bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-gray-100 text-gray-600 leading-relaxed space-y-8">
+            
+            <section>
+                <p class="text-lg">Al acceder y utilizar <strong>Nutrisoft</strong>, aceptas cumplir con los siguientes términos y condiciones de uso. Si no estás de acuerdo con alguna parte de estos términos, no debes utilizar nuestra plataforma.</p>
+            </section>
+
+            <section>
+                <h2 class="text-xl font-bold text-gray-900 mb-3 flex items-center gap-2">
+                    <span class="text-green-500">1.</span> Naturaleza del Servicio
+                </h2>
+                <p>Nutrisoft es una herramienta de software diseñada para el registro y seguimiento de datos físicos, como el peso y el Índice de Masa Corporal (IMC). La información proporcionada por la aplicación, incluyendo cálculos y consejos automatizados, tiene un propósito estrictamente informativo. En ningún caso sustituye el diagnóstico, asesoramiento o tratamiento médico profesional.</p>
+            </section>
+
+            <section>
+                <h2 class="text-xl font-bold text-gray-900 mb-3 flex items-center gap-2">
+                    <span class="text-green-500">2.</span> Responsabilidades del Usuario
+                </h2>
+                <ul class="list-disc pl-5 space-y-1 text-gray-600">
+                    <li>Garantizar que la información proporcionada al registrarse y al utilizar la aplicación sea precisa y actual.</li>
+                    <li>Mantener la confidencialidad de las credenciales de acceso a la cuenta.</li>
+                    <li>Notificar de inmediato cualquier uso no autorizado de la cuenta.</li>
+                    <li>No utilizar la plataforma para fines ilegales o no autorizados.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2 class="text-xl font-bold text-gray-900 mb-3 flex items-center gap-2">
+                    <span class="text-green-500">3.</span> Propiedad Intelectual
+                </h2>
+                <p>Todo el contenido, diseño, código fuente, logotipos y algoritmos presentes en Nutrisoft son propiedad exclusiva de los desarrolladores de la plataforma. Queda prohibida la reproducción, distribución o modificación no autorizada de cualquier elemento de la aplicación.</p>
+            </section>
+
+            <section>
+                <h2 class="text-xl font-bold text-gray-900 mb-3 flex items-center gap-2">
+                    <span class="text-green-500">4.</span> Limitación de Responsabilidad
+                </h2>
+                <p>Nutrisoft no se hace responsable de decisiones de salud o alteraciones físicas tomadas con base en la información generada por la aplicación. El usuario comprende que el uso de la plataforma es bajo su propio riesgo.</p>
+            </section>
+
+            <section>
+                <h2 class="text-xl font-bold text-gray-900 mb-3 flex items-center gap-2">
+                    <span class="text-green-500">5.</span> Modificaciones del Servicio
+                </h2>
+                <p>Nos reservamos el derecho de modificar, suspender o discontinuar cualquier aspecto de la aplicación en cualquier momento, con o sin previo aviso. Asimismo, estos términos pueden ser actualizados periódicamente, siendo responsabilidad del usuario revisarlos.</p>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="bg-white border-t border-gray-200 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="md:flex md:items-center md:justify-between">
+                <div class="flex justify-center md:justify-start mb-6 md:mb-0">
+                    <span class="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-green-400">Nutrisoft</span>
+                    <span class="ml-3 text-sm text-gray-500 font-medium self-end pb-1">&copy; 2026 Todos los derechos reservados.</span>
+                </div>
+                <div class="flex justify-center space-x-6 text-sm font-medium text-gray-500">
+                    <a href="/soporte" class="hover:text-green-600 transition-colors">Soporte</a>
+                    <a href="/privacidad" class="hover:text-green-600 transition-colors">Privacidad</a>
+                    <a href="/terminos" class="hover:text-green-600 transition-colors">Términos</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

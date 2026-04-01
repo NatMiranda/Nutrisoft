@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Soporte - Nutrisoft</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen font-sans flex flex-col">
+
+    <nav class="bg-gradient-to-r from-green-600 via-yellow-400 to-green-500 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <a href="/" class="text-2xl font-extrabold text-white tracking-wider drop-shadow-md hover:opacity-90 transition-opacity">Nutrisoft</a>
+                <div class="flex items-center gap-4">
+                    {% if usuario %}
+                        <a href="/panel" class="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg text-sm font-bold transition-all">Volver al Panel</a>
+                    {% else %}
+                        <a href="/" class="bg-white text-green-600 px-4 py-2 rounded-lg text-sm font-bold shadow-md transition-all">Iniciar Sesión</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-white py-16 border-b border-gray-200">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-5xl font-black text-gray-900 mb-4">Centro de Ayuda</h1>
+            <p class="text-lg text-gray-500">Estamos aquí para ayudarte a sacar el máximo provecho de Nutrisoft. Encuentra respuestas rápidas o escríbenos.</p>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-1 lg:grid-cols-2 gap-12">
+        
+        <div>
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                <span class="bg-blue-100 p-2 rounded-lg text-xl">💡</span> Preguntas Frecuentes
+            </h2>
+            <div class="space-y-4">
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                    <h3 class="font-bold text-gray-900 text-lg">¿Cómo actualizo mi estatura?</h3>
+                    <p class="text-gray-500 text-sm mt-2">Ve a la sección "Perfil" desde tu panel de control. Allí podrás ingresar o modificar tu estatura, la cual es esencial para calcular tu IMC correctamente.</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                    <h3 class="font-bold text-gray-900 text-lg">Me equivoqué al cargar un peso, ¿puedo borrarlo?</h3>
+                    <p class="text-gray-500 text-sm mt-2">¡Sí! En tu panel principal, ve a la tabla de "Historial de progreso". Al lado de cada registro verás un ícono de papelera roja. Haz clic allí para eliminarlo.</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                    <h3 class="font-bold text-gray-900 text-lg">¿Cómo funciona la similitud de famosos?</h3>
+                    <p class="text-gray-500 text-sm mt-2">Nuestro sistema compara tu altura y peso actual con una base de datos de más de 50 celebridades y personajes usando un algoritmo matemático para encontrar tu coincidencia física más cercana.</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                    <h3 class="font-bold text-gray-900 text-lg">¿Mis datos están seguros?</h3>
+                    <p class="text-gray-500 text-sm mt-2">Absolutamente. Tus registros de peso e información personal son privados y solo tú puedes acceder a ellos iniciando sesión con tus credenciales.</p>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div class="bg-white p-8 rounded-2xl shadow-xl border border-gray-100">
+                <h2 class="text-2xl font-bold text-gray-800 mb-2 flex items-center gap-2">
+                    <span class="bg-green-100 p-2 rounded-lg text-xl">✉️</span> Envíanos un mensaje
+                </h2>
+                <p class="text-gray-500 text-sm mb-6">¿No encontraste lo que buscabas? Completa el formulario y te responderemos en menos de 24 horas.</p>
+                
+                <form action="#" method="POST" class="space-y-5" onsubmit="event.preventDefault(); alert('¡Mensaje enviado con éxito! Te contactaremos pronto.');">
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">Nombre</label>
+                        <input type="text" placeholder="Tu nombre completo" required
+                               class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">Correo Electrónico</label>
+                        <input type="email" placeholder="ejemplo@correo.com" required
+                               class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">Tu Mensaje</label>
+                        <textarea rows="4" placeholder="¿En qué te podemos ayudar hoy?" required
+                                  class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all resize-none"></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-extrabold py-3.5 rounded-xl shadow-lg shadow-green-100 transition-all transform hover:scale-[1.02]">
+                        Enviar Mensaje
+                    </button>
+                </form>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="bg-white border-t border-gray-200 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="md:flex md:items-center md:justify-between">
+                <div class="flex justify-center md:justify-start mb-6 md:mb-0">
+                    <span class="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-green-400">Nutrisoft</span>
+                    <span class="ml-3 text-sm text-gray-500 font-medium self-end pb-1">&copy; 2026 Todos los derechos reservados.</span>
+                </div>
+                <div class="flex justify-center space-x-6 text-sm font-medium text-gray-500">
+                    <a href="/soporte" class="hover:text-green-600 transition-colors">Soporte</a>
+                    <a href="#" class="hover:text-green-600 transition-colors">Privacidad</a>
+                    <a href="#" class="hover:text-green-600 transition-colors">Términos</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

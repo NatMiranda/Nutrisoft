@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Privacidad - Nutrisoft</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen font-sans flex flex-col">
+
+    <nav class="bg-gradient-to-r from-green-600 via-yellow-400 to-green-500 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <a href="/" class="text-2xl font-extrabold text-white tracking-wider drop-shadow-md hover:opacity-90 transition-opacity">Nutrisoft</a>
+                <div class="flex items-center gap-4">
+                    {% if usuario %}
+                        <a href="/panel" class="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg text-sm font-bold transition-all">Volver al Panel</a>
+                    {% else %}
+                        <a href="/" class="bg-white text-green-600 px-4 py-2 rounded-lg text-sm font-bold shadow-md transition-all">Iniciar Sesión</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-white py-12 border-b border-gray-200">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h1 class="text-3xl md:text-4xl font-black text-gray-900 mb-4">Política de Privacidad</h1>
+            <p class="text-md text-gray-500 font-medium">Última actualización: Abril de 2026</p>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-3xl mx-auto px-4 sm:px-6 py-12">
+        <div class="bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-gray-100 text-gray-600 leading-relaxed space-y-8">
+            
+            <section>
+                <p class="text-lg">En <strong>Nutrisoft</strong>, valoramos y respetamos tu privacidad. Esta política explica cómo recopilamos, usamos y protegemos tu información personal cuando utilizas nuestra plataforma de seguimiento de salud.</p>
+            </section>
+
+            <section>
+                <h2 class="text-xl font-bold text-gray-900 mb-3 flex items-center gap-2">
+                    <span class="text-green-500">1.</span> Información que recopilamos
+                </h2>
+                <p class="mb-2">Para brindarte un servicio personalizado, recopilamos los siguientes datos cuando te registras y utilizas la aplicación:</p>
+                <ul class="list-disc pl-5 space-y-1 text-gray-600">
+                    <li><strong>Datos de cuenta:</strong> Nombre de usuario y dirección de correo electrónico.</li>
+                    <li><strong>Datos físicos:</strong> Estatura y registros diarios o históricos de peso.</li>
+                    <li><strong>Datos técnicos:</strong> Información sobre tu sesión para mantener tu cuenta segura mientras navegas por la aplicación.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2 class="text-xl font-bold text-gray-900 mb-3 flex items-center gap-2">
+                    <span class="text-green-500">2.</span> Uso de la información
+                </h2>
+                <p class="mb-2">Utilizamos tu información exclusivamente para las funciones internas de la aplicación, las cuales incluyen:</p>
+                <ul class="list-disc pl-5 space-y-1 text-gray-600">
+                    <li>Calcular tu Índice de Masa Corporal (IMC) según los estándares de la OMS.</li>
+                    <li>Generar gráficos visuales sobre tu evolución y progreso histórico.</li>
+                    <li>Ofrecerte consejos automáticos basados en tus métricas actuales.</li>
+                    <li>Comparar métricas de forma anónima para nuestro algoritmo de "similitud con celebridades".</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2 class="text-xl font-bold text-gray-900 mb-3 flex items-center gap-2">
+                    <span class="text-green-500">3.</span> Protección y Seguridad
+                </h2>
+                <p>Nutrisoft no vende, alquila ni comparte tus datos personales o médicos con terceros, agencias de publicidad o empresas externas. Toda tu información se almacena en bases de datos seguras y el acceso a tu perfil está protegido mediante el sistema de autenticación de tu cuenta.</p>
+            </section>
+
+            <section>
+                <h2 class="text-xl font-bold text-gray-900 mb-3 flex items-center gap-2">
+                    <span class="text-green-500">4.</span> Uso de Cookies
+                </h2>
+                <p>Nuestra aplicación utiliza "cookies" de sesión estrictamente necesarias para mantenerte conectado a tu panel de control y garantizar que tu información no se mezcle con la de otros usuarios. No utilizamos cookies de rastreo publicitario.</p>
+            </section>
+
+            <section>
+                <h2 class="text-xl font-bold text-gray-900 mb-3 flex items-center gap-2">
+                    <span class="text-green-500">5.</span> Tus Derechos
+                </h2>
+                <p>Como usuario, tienes el control total sobre tus datos. Puedes editar tu información de perfil, eliminar registros de peso individuales desde tu historial o solicitar la eliminación completa de tu cuenta y todos tus datos asociados contactando a nuestro soporte.</p>
+            </section>
+
+            <hr class="border-gray-100 my-8">
+
+            <div class="bg-blue-50 p-6 rounded-2xl border border-blue-100 text-center">
+                <p class="text-blue-800 font-medium text-sm">¿Tienes alguna duda sobre el manejo de tus datos?</p>
+                <a href="/soporte" class="inline-block mt-3 px-5 py-2 bg-white text-blue-600 font-bold rounded-lg shadow-sm hover:shadow transition-all text-sm">Contactar a Soporte</a>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="bg-white border-t border-gray-200 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="md:flex md:items-center md:justify-between">
+                <div class="flex justify-center md:justify-start mb-6 md:mb-0">
+                    <span class="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-green-400">Nutrisoft</span>
+                    <span class="ml-3 text-sm text-gray-500 font-medium self-end pb-1">&copy; 2026 Todos los derechos reservados.</span>
+                </div>
+                <div class="flex justify-center space-x-6 text-sm font-medium text-gray-500">
+                    <a href="/soporte" class="hover:text-green-600 transition-colors">Soporte</a>
+                    <a href="/privacidad" class="hover:text-green-600 transition-colors">Privacidad</a>
+                    <a href="#" class="hover:text-green-600 transition-colors">Términos</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
