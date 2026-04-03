@@ -2,4 +2,5 @@ Flask
 Flask-SQLAlchemy
 gunicorn
 python-dotenv
-gunicorn
+Authlib
+requests
