@@ -4,3 +4,4 @@ gunicorn
 python-dotenv
 Authlib
 requests
+psycopg2-binary

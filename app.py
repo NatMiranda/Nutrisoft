@@ -32,7 +32,11 @@ app.secret_key = os.getenv('SECRET_KEY')
 serializer = URLSafeTimedSerializer(app.secret_key)
 
 # Configuración de la base de datos (se creará un archivo datos.db)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///datos.db'
+database_url = os.getenv('DATABASE_URL')
+if database_url and database_url.startswith("postgres://"):
+    database_url = database_url.replace("postgres://", "postgresql://", 1)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = database_url or 'sqlite:///datos.db'
 db = SQLAlchemy(app)
 
 # 2. Configuramos la herramienta OAuth
@@ -485,6 +489,23 @@ def logout():
     # 📢 Avisamos al usuario y mandamos al login
     # IMPORTANTE: Cambia 'inicio' por el nombre de tu función de login
     flash("Has cerrado sesión correctamente.")
+    return redirect(url_for('inicio'))
+
+@app.route('/eliminar_cuenta', methods=['POST'])
+def eliminar_cuenta():
+    correo_usuario = session.get('correo')
+    
+    if not correo_usuario:
+        return redirect(url_for('inicio'))
+
+    usuario = Usuario.query.filter_by(correo=correo_usuario).first()
+
+    if usuario:
+        db.session.delete(usuario)
+        db.session.commit()
+        session.clear()
+        flash('Cuenta eliminada correctamente.')
+
     return redirect(url_for('inicio'))
 
 if __name__ == '__main__':
