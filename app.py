@@ -11,6 +11,7 @@ from flask import Flask, flash, redirect, render_template, request, session, url
 from flask_sqlalchemy import SQLAlchemy
 from itsdangerous import SignatureExpired, URLSafeTimedSerializer
 from werkzeug.security import generate_password_hash
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 directorio_base = os.path.dirname(os.path.abspath(__file__))
 ruta_env = os.path.join(directorio_base, '.env')
@@ -28,6 +29,11 @@ load_dotenv(ruta_env, override=True)
 print("🕵️‍♂️ PRUEBA DE ID:", os.getenv("GOOGLE_CLIENT_ID"))
 
 app = Flask(__name__)
+app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
+
+app.config['SESSION_COOKIE_NAME'] = 'nutrisoft_session'
+app.config['SESSION_COOKIE_SECURE'] = True
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
 app.secret_key = os.getenv('SECRET_KEY')
 serializer = URLSafeTimedSerializer(app.secret_key)
 
