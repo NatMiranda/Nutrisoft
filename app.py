@@ -44,6 +44,8 @@ if database_url and database_url.startswith("postgres://"):
 
 app.config['SQLALCHEMY_DATABASE_URI'] = database_url or 'sqlite:///datos.db'
 db = SQLAlchemy(app)
+with app.app_context():
+    db.create_all()
 
 # 2. Configuramos la herramienta OAuth
 oauth = OAuth(app)
@@ -420,13 +422,11 @@ def iniciar_sesion():
     
     usuario = Usuario.query.filter_by(correo=correo_ingresado).first()
     
-    if usuario and usuario.password == password_ingresada:
-        # 🎟️ Le ponemos la pulsera guardando su ID en la memoria del navegador
+    if usuario and check_password_hash(usuario.password, password_ingresada):
         session['usuario_id'] = usuario.id 
         return redirect(url_for('ver_panel'))
     else:
         flash("Datos incorrectos. Por favor, intenta de nuevo.")
-        # Lo recargamos en la misma página de login
         return redirect(url_for('inicio'))
 
 @app.route('/cerrar_sesion')
@@ -499,12 +499,12 @@ def logout():
 
 @app.route('/eliminar_cuenta', methods=['POST'])
 def eliminar_cuenta():
-    correo_usuario = session.get('correo')
+    usuario_id = session.get('usuario_id')
     
-    if not correo_usuario:
+    if not usuario_id:
         return redirect(url_for('inicio'))
 
-    usuario = Usuario.query.filter_by(correo=correo_usuario).first()
+    usuario = Usuario.query.get(usuario_id)
 
     if usuario:
         db.session.delete(usuario)
