@@ -9,7 +9,7 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
-<body class="bg-white min-h-screen font-sans" onload="cargarGrafico()">
+<body class="bg-white min-h-screen font-sans">
   <nav class="bg-gradient-to-r from-green-600 via-yellow-400 to-green-500 shadow-lg">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between h-16 items-center">
@@ -229,11 +229,11 @@
         </div>
 
         <div class="lg:col-span-1">
-          <div class="bg-white p-6 rounded-2xl shadow-xl border border-gray-100 h-full flex flex-col">
+          <div class="bg-white p-6 rounded-2xl shadow-xl border border-gray-100 h-[400px] flex flex-col">
             <h3 class="text-lg font-bold text-gray-800 mb-6 flex items-center gap-2">
               Evolución de Peso
             </h3>
-            <div class="flex-grow">
+            <div class="relative flex-grow w-full h-full">
               <canvas id="graficoPeso"></canvas>
             </div>
           </div>
@@ -274,6 +274,9 @@
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1"></script>
+
   <script>
     // Script de ordenamiento de la tabla
     let direccion = true;
@@ -300,55 +303,53 @@
     }
   </script>
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const checkbox = document.getElementById("aceptaTerminos");
-      const btnGoogle = document.getElementById("btnGoogle");
-      const mensajeError = document.getElementById("mensajeError");
+    document.addEventListener('DOMContentLoaded', function () {
+      const checkbox = document.getElementById('aceptaTerminos');
+      const btnGoogle = document.getElementById('btnGoogle');
+      const mensajeError = document.getElementById('mensajeError');
 
-      btnGoogle.style.opacity = "0.5";
-      btnGoogle.style.pointerEvents = "none";
+      // 👇 ESTA ES LA LÍNEA SALVAVIDAS 👇
+      if (!btnGoogle) return; // Si no hay botón (ej. estamos en el panel), detenemos el script aquí.
 
-      checkbox.addEventListener("change", function () {
+      btnGoogle.style.opacity = '0.5';
+      btnGoogle.style.pointerEvents = 'none';
+
+      checkbox.addEventListener('change', function () {
         if (this.checked) {
-          btnGoogle.style.opacity = "1";
-          btnGoogle.style.pointerEvents = "auto";
-          mensajeError.classList.add("hidden");
+          btnGoogle.style.opacity = '1';
+          btnGoogle.style.pointerEvents = 'auto';
+          mensajeError.classList.add('hidden');
         } else {
-          btnGoogle.style.opacity = "0.5";
-          btnGoogle.style.pointerEvents = "none";
+          btnGoogle.style.opacity = '0.5';
+          btnGoogle.style.pointerEvents = 'none';
         }
       });
 
-      btnGoogle.addEventListener("click", function (e) {
+      btnGoogle.addEventListener('click', function (e) {
         if (!checkbox.checked) {
           e.preventDefault();
-          mensajeError.classList.remove("hidden");
+          mensajeError.classList.remove('hidden');
         }
       });
     });
   </script>
   <script>
-    // Usamos una función autoejecutable para evitar conflictos
     (function () {
       const canvas = document.getElementById('graficoPeso');
-      if (!canvas) return; // Si no hay canvas, no hacemos nada
+      if (!canvas) return;
 
-      // Preparamos los datos desde Jinja
       const etiquetas = [
         {% for r in registros %}
-                  "{{ r.fecha.strftime('%d/%m') }}",
+        "{{ r.fecha.strftime('%d/%m') }}",
       {% endfor %}
-          ];
+    ];
 
     const datosPeso = [
       {% for r in registros %}
-    { { r.peso } },
-    {% endfor %}
-          ];
+        {{ r.peso }}, {% endfor %}
+    ];
 
-    // Si no hay datos, no intentamos dibujar el gráfico
     if (datosPeso.length === 0) {
-      console.log("Nutrisoft: No hay registros para graficar.");
       return;
     }
 
@@ -373,7 +374,22 @@
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-          legend: { display: false }
+          legend: { display: false },
+          zoom: {
+            pan: {
+              enabled: true,
+              mode: 'x'
+            },
+            zoom: {
+              wheel: {
+                enabled: true
+              },
+              pinch: {
+                enabled: true
+              },
+              mode: 'x'
+            }
+          }
         },
         scales: {
           y: {
@@ -386,8 +402,9 @@
         }
       }
     });
-      }) ();
+  }) ();
   </script>
+
 </body>
 
 </html>

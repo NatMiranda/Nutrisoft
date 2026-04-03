@@ -1,11 +1,16 @@
-import os, math, random
+import math
+import os
+import random
+import smtplib
 from datetime import datetime
-from flask import Flask, render_template, request, redirect, url_for, session, flash
-from dotenv import load_dotenv
-from itsdangerous import URLSafeTimedSerializer, SignatureExpired
-from werkzeug.security import generate_password_hash
-from flask_sqlalchemy import SQLAlchemy
+from email.mime.text import MIMEText
+
 from authlib.integrations.flask_client import OAuth
+from dotenv import load_dotenv
+from flask import Flask, flash, redirect, render_template, request, session, url_for
+from flask_sqlalchemy import SQLAlchemy
+from itsdangerous import SignatureExpired, URLSafeTimedSerializer
+from werkzeug.security import generate_password_hash
 
 directorio_base = os.path.dirname(os.path.abspath(__file__))
 ruta_env = os.path.join(directorio_base, '.env')
@@ -76,38 +81,45 @@ def inicio():
 def registro():
     return render_template('registro_perfil.html')
 
+def enviar_correo_recuperacion(destinatario, enlace):
+    remitente = os.getenv('EMAIL_USER')
+    password_app = os.getenv('EMAIL_PASS')
+    
+    msg = MIMEText(f"Accede al siguiente enlace para restablecer tu contraseña: {enlace}")
+    msg['Subject'] = 'Recuperación de contraseña'
+    msg['From'] = remitente
+    msg['To'] = destinatario
+    
+    server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+    server.login(remitente, password_app)
+    server.send_message(msg)
+    server.quit()
+
 @app.route('/recuperar', methods=['GET', 'POST'])
 def recuperar_password():
     if request.method == 'POST':
-        correo_ingresado = request.form.get('email')
-        usuario = Usuario.query.filter_by(correo=correo_ingresado).first()
+        correo = request.form.get('correo')
+        usuario = Usuario.query.filter_by(correo=correo).first()
         
         if usuario:
-            token = serializer.dumps(correo_ingresado, salt='recuperacion-pass')
-            enlace = url_for('reset_password', token=token, _external=True)
+            token = serializer.dumps(correo, salt='recuperacion')
+            enlace = url_for('restablecer_password', token=token, _external=True)
+            enviar_correo_recuperacion(correo, enlace)
             
-            print("\n" + "="*50)
-            print(f"EMAIL DE RECUPERACIÓN PARA: {correo_ingresado}")
-            print(f"HAZ CLIC AQUÍ: {enlace}")
-            print("="*50 + "\n")
-            
-            flash('Si el correo existe en nuestra base, verás el enlace en la consola de Python.', 'success')
-        else:
-            flash('Si el correo existe en nuestra base, verás el enlace en la consola de Python.', 'success')
-            
-        return redirect(url_for('recuperar_password'))
-
+        flash('Si el correo está registrado, recibirás un enlace de recuperación.')
+        return redirect(url_for('inicio'))
+        
     return render_template('recuperar.html')
 
-@app.route('/reset/<token>', methods=['GET', 'POST'])
-def reset_password(token):
+@app.route('/restablecer/<token>', methods=['GET', 'POST'])
+def restablecer_password(token):
     try:
-        correo_token = serializer.loads(token, salt='recuperacion-pass', max_age=3600)
+        correo_token = serializer.loads(token, salt='recuperacion', max_age=3600)
     except SignatureExpired:
         flash('El enlace ha expirado. Solicita uno nuevo.', 'error')
         return redirect(url_for('recuperar_password'))
-    except:
-        flash('Enlace inválido.', 'error')
+    except Exception:
+        flash('El enlace es inválido o ha expirado.')
         return redirect(url_for('recuperar_password'))
 
     if request.method == 'POST':
@@ -134,8 +146,6 @@ def guardar_perfil():
     
     # ¡Esta es la línea clave que cambió! 
     return redirect(url_for('ver_panel'))
-
-# ... (mantén tus clases Usuario y RegistroPeso arriba)
 
 @app.route('/panel')
 def ver_panel():
@@ -379,21 +389,18 @@ def guardar_registro():
     correo_nuevo = request.form['correo']
     password_nuevo = request.form['password']
     
-    # 🔍 LA VALIDACIÓN: Buscamos si ya hay alguien con ese correo
     usuario_existente = Usuario.query.filter_by(correo=correo_nuevo).first()
     
     if usuario_existente:
-        # Guardamos el mensaje en memoria
         flash("Ese correo ya está registrado. Por favor, inicia sesión.")
-        # Lo recargamos en la misma página de registro
         return redirect(url_for('registro'))
     
-    # Si el correo está libre, guardamos al nuevo usuario
-    nuevo_usuario = Usuario(nombre=nombre_nuevo, correo=correo_nuevo, password=password_nuevo)
+    password_encriptada = generate_password_hash(password_nuevo)
+    
+    nuevo_usuario = Usuario(nombre=nombre_nuevo, correo=correo_nuevo, password=password_encriptada)
     db.session.add(nuevo_usuario)
     db.session.commit()
     
-    # Lo enviamos a la pantalla de Login para que entre con su nueva cuenta
     return redirect(url_for('inicio'))
 
 @app.route('/iniciar_sesion', methods=['POST'])
@@ -424,7 +431,6 @@ def cerrar_sesion():
 def login_google():
     ruta_de_regreso = url_for('callback', _external=True) 
     return google.authorize_redirect(ruta_de_regreso)
-
 
 @app.route('/callback')
 def callback():
