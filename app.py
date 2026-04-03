@@ -23,7 +23,7 @@ load_dotenv(ruta_env, override=True)
 print("🕵️‍♂️ PRUEBA DE ID:", os.getenv("GOOGLE_CLIENT_ID"))
 
 app = Flask(__name__)
-app.secret_key = '123SDXWER@234**ÑDS234'
+app.secret_key = os.getenv('SECRET_KEY')
 serializer = URLSafeTimedSerializer(app.secret_key)
 
 # Configuración de la base de datos (se creará un archivo datos.db)
